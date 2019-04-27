@@ -3,7 +3,11 @@
     "description": "GrapgQL framework with Eloquent",
     "type": "poject",
     "require": {
-        "pinatra/framework": "~0.0"
+        "webonyx/graphql-php": "^0.13.1",
+        "filp/whoops": "*",
+        "illuminate/database": "*",
+        "vlucas/phpdotenv": "^3.3",
+        "symfony/var-dumper": "^4.2"
     },
     "autoload": {
         "psr-4": {
