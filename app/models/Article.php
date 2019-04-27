@@ -1,6 +1,6 @@
 <?php
 
-namespace Model;
+namespace App\Models;
 
 class Article extends \Pinatra\Model\Model
 {

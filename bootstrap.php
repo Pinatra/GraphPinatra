@@ -7,7 +7,7 @@ $whoops->register();
 $dotenv = Dotenv\Dotenv::create(BASE_PATH);
 $dotenv->load();
 
-\Model\Model::$config = [
+\App\Models\Model::$config = [
   'driver'    => 'mysql',
   'host'      => env('DB_HOST', 'localhost'),
   'port'      => env('DB_PORT', '3306'),
@@ -19,60 +19,73 @@ $dotenv->load();
   'prefix'    => '',
 ];
 
-use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Schema;
-use GraphQL\GraphQL;
 
+use \App\AppContext;
+
+use \GraphQL\Type\Schema;
+use \GraphQL\Type\Definition\Type;
+use \GraphQL\Type\Definition\ObjectType;
+use \GraphQL\GraphQL;
+use \GraphQL\Error\FormattedError;
+use \GraphQL\Error\Debug;
+// Disable default PHP error reporting - we have better one for debug mode (see bellow)
+ini_set('display_errors', 0);
+
+$debug = false;
+if (!empty($_GET['debug'])) {
+    set_error_handler(function($severity, $message, $file, $line) use (&$phpErrors) {
+        throw new ErrorException($message, 0, $severity, $file, $line);
+    });
+    $debug = Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE;
+}
 try {
-    $queryType = new ObjectType([
-        'name' => 'Query',
-        'fields' => [
-            'echo' => [
-                'type' => Type::string(),
-                'args' => [
-                    'message' => ['type' => Type::string()],
-                ],
-                'resolve' => function ($root, $args) {
-                    return $root['prefix'] . $args['message'];
-                }
-            ],
-        ],
-    ]);
-    $mutationType = new ObjectType([
-        'name' => 'Calc',
-        'fields' => [
-            'sum' => [
-                'type' => Type::int(),
-                'args' => [
-                    'x' => ['type' => Type::int()],
-                    'y' => ['type' => Type::int()],
-                ],
-                'resolve' => function ($root, $args) {
-                    return $args['x'] + $args['y'];
-                },
-            ],
-        ],
-    ]);
-    // See docs on schema options:
-    // http://webonyx.github.io/graphql-php/type-system/schema/#configuration-options
+    // Prepare context that will be available in all field resolvers (as 3rd argument):
+    $appContext = new AppContext();
+    $appContext->rootUrl = 'http://localhost:8080';
+    $appContext->request = $_REQUEST;
+    // Parse incoming query and variables
+    if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
+        $raw = file_get_contents('php://input') ?: '';
+        $data = json_decode($raw, true) ?: [];
+    } else {
+        $data = $_REQUEST;
+    }
+    
+    $data += ['query' => null, 'variables' => null];
+    if (null === $data['query']) {
+        $data['query'] = '{hello}';
+    }
+    
+    // GraphQL schema to be passed to query executor:
     $schema = new Schema([
-        'query' => $queryType,
-        'mutation' => $mutationType,
+        'query' => new ObjectType([
+            'name' => 'Query',
+            'fields' => [
+                'clue'               => Type::string(),
+                'fieldWithException' => [
+                    'type' => Type::string(),
+                    'resolve' => function() {
+                        throw new \Exception("Exception message thrown in field resolver");
+                    }
+                ],
+            ],
+        ])
     ]);
-    $rawInput = file_get_contents('php://input');
-    $input = json_decode($rawInput, true);
-    $query = $input['query'];
-    $variableValues = isset($input['variables']) ? $input['variables'] : null;
-    $rootValue = ['prefix' => 'You said: '];
-    $result = GraphQL::executeQuery($schema, $query, $rootValue, null, $variableValues);
-    $output = $result->toArray();
-} catch (\Exception $e) {
-    $output = [
-        'error' => [
-            'message' => $e->getMessage()
-        ]
+
+    $result = GraphQL::executeQuery(
+        $schema,
+        $data['query'],
+        null,
+        $appContext,
+        (array) $data['variables']
+    );
+    $output = $result->toArray($debug);
+    $httpStatus = 200;
+} catch (\Exception $error) {
+    $httpStatus = 500;
+    $output['errors'] = [
+        FormattedError::createFromException($error, $debug)
     ];
 }
-header('Content-Type: application/json; charset=UTF-8');
+header('Content-Type: application/json', true, $httpStatus);
 echo json_encode($output);
