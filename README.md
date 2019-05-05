@@ -1,4 +1,4 @@
 GraphPinatra
 -----
 
-GrapgQL framework with Eloquent.
+GraphQL framework with Eloquent.
