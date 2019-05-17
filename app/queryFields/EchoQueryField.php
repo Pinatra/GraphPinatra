@@ -4,7 +4,7 @@ namespace App\QueryFields;
 
 use \GraphQL\Type\Definition\Type;
 
-class ArticleQueryField
+class EchoQueryField
 {
   public function export()
   {

@@ -7,7 +7,7 @@ class Routes
   public static function export()
   {
     return [
-      'echo' => \App\QueryFields\ArticleQueryField::class,
+      'echo' => \App\QueryFields\EchoQueryField::class,
     ];
   }
 }
