@@ -14,6 +14,7 @@ class EchoQueryField
         'message' => Type::string(),
       ],
       'resolve' => function ($root, $args) {
+        // return \App\Models\Article::all();
         return $root['prefix'] . $args['message'];
       }
     ];
