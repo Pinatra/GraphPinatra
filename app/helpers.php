@@ -16,3 +16,9 @@ if (!function_exists('config')) {
     return array_key_exists($name, $config) ? $config[$name] : null;
   }
 }
+if (!function_exists('cc')) {
+  function cc($ha){
+    echo json_encode($ha, JSON_UNESCAPED_UNICODE);
+    die;
+  }
+}

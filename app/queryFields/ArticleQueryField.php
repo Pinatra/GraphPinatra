@@ -19,6 +19,7 @@ class ArticleQueryField
       ],
       'resolve' => function ($root, $args, AppContext $context) {
         $article = Article::find($args['id']);
+        cc($article);
         return $article;
       }
     ];
