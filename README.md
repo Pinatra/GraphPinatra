@@ -19,10 +19,10 @@ php -S 0.0.0.0:8000 -t public
 open the url below with your browser:
 
 ```bash
-http://0.0.0.0:8000/graphql.php?debug=1&query={%20article(id:%201)%20{%20id%20title%20read_count%20}%20}
+http://0.0.0.0:8000/graphql.php?debug=1&query={article(id:1){id,title,read_count}}
 ```
 
-or use [ChromeiQL Chrome app](https://chrome.google.com/webstore/detail/chromeiql/fkkiamalmpiidkljmicmjfbieiclmeij) with json:
+or use [ChromeiQL Chrome app](https://chrome.google.com/webstore/detail/chromeiql/fkkiamalmpiidkljmicmjfbieiclmeij) with:
 
 ```js
 {
