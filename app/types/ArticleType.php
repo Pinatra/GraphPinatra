@@ -29,7 +29,7 @@ class ArticleType extends ObjectType
       },
 
       'resolveField' => function($value, $args, $context, ResolveInfo $info) {
-        return $value->{$info->fieldName};
+        return $value[$info->fieldName];
       }
     ];
     parent::__construct($config);

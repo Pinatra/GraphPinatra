@@ -18,8 +18,19 @@ class ArticleQueryField
         'id' => Type::int(),
       ],
       'resolve' => function ($root, $args, AppContext $context) {
-        $article = Article::find($args['id']);
-        cc($article);
+        $article = collect([
+          'id' => 1,
+          'title' => 'ooxx',
+          'city' => null,
+          'is_publish' => 0,
+          'read_count' => 0,
+          'images' => null,
+          'abstract' => null,
+          'content' => null,
+          'user_id' => null,
+          'created_at' => null,
+          'updated_at' => null,
+        ]);//Article::find($args['id']);
         return $article;
       }
     ];
