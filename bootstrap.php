@@ -10,7 +10,7 @@ use \GraphQL\Error\FormattedError;
 use \GraphQL\Error\Debug;
 
 $whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler);
 $whoops->register();
 
 require BASE_PATH.'/app/helpers.php';
