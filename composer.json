@@ -3,7 +3,7 @@
     "description": "GrapgQL framework with Eloquent",
     "type": "poject",
     "require": {
-        "webonyx/graphql-php": "^0.13.1",
+        "webonyx/graphql-php": "^0.13",
         "filp/whoops": "*",
         "illuminate/database": "*",
         "vlucas/phpdotenv": "^3.3",
