@@ -12,7 +12,7 @@ if (!function_exists('url')) {
 }
 if (!function_exists('config')) {
   function config($name){
-    $config = require BASE_PATH.'/app/config.php';
+    $config = require APP_DIRECTORY.'/config.php';
     return array_key_exists($name, $config) ? $config[$name] : null;
   }
 }

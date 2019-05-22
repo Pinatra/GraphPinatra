@@ -1,8 +1,8 @@
 <?php
 
-use \App\AppContext;
-use \App\AppObjectType;
-use \App\Routes;
+use \GraphApp\AppContext;
+use \GraphApp\AppObjectType;
+use \GraphApp\Routes;
 
 use \GraphQL\Type\Schema;
 use \GraphQL\GraphQL;
@@ -13,12 +13,12 @@ $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler);
 $whoops->register();
 
-require BASE_PATH.'/app/helpers.php';
+require APP_DIRECTORY.'/helpers.php';
 
 $dotenv = Dotenv\Dotenv::create(BASE_PATH);
 $dotenv->load();
 
-\App\Models\Model::$config = config('database');
+\GraphApp\Models\Model::$config = config('database');
 
 $debug = false;
 if (!empty($_GET['debug'])) {

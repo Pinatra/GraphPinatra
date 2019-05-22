@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace GraphApp;
 
 /**
  * Class AppContext

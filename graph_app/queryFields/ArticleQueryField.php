@@ -1,12 +1,12 @@
 <?php
 
-namespace App\QueryFields;
+namespace GraphApp\QueryFields;
 
 use GraphQL\Type\Definition\Type;
-use App\TypeRegistry;
-use App\AppContext;
+use GraphApp\TypeRegistry;
+use GraphApp\AppContext;
 
-use App\Models\Article;
+use GraphApp\Models\Article;
 
 class ArticleQueryField
 {
