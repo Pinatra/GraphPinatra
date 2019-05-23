@@ -25,7 +25,7 @@ http://0.0.0.0:8000/graphql.php?debug=1&query={article(id:1){id,title,read_count
 or use [ChromeiQL Chrome app](https://chrome.google.com/webstore/detail/chromeiql/fkkiamalmpiidkljmicmjfbieiclmeij) with:
 
 ```js
-{
+query {
   article(id: 1) {
     id
     title

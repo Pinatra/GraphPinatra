@@ -43,7 +43,8 @@ try {
   $data += ['query' => null, 'variables' => null];
 
   $schema = new Schema([
-    'query' => new AppObjectType(Routes::export())
+    'query' => AppObjectType::query(Routes::queries()),
+    'mutation' => AppObjectType::mutation(Routes::mutations()),
   ]);
 
   $result = GraphQL::executeQuery(

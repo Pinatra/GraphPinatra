@@ -6,7 +6,7 @@ use \GraphQL\Type\Definition\ObjectType;
 
 class AppObjectType extends ObjectType
 {
-  public function __construct($queryFields)
+  public static function query($queryFields)
   {
     $resultArray = [
       'name' => 'Query',
@@ -15,6 +15,17 @@ class AppObjectType extends ObjectType
     foreach ($queryFields as $key => $field) {
       $resultArray['fields'][$key] = (new $field)->export();
     }
-    return parent::__construct($resultArray);
+    return new self($resultArray);
+  }
+  public static function mutation($mutationFields)
+  {
+    $resultArray = [
+      'name' => 'Mutation',
+      'fields' => [],
+    ];
+    foreach ($mutationFields as $key => $field) {
+      $resultArray['fields'][$key] = (new $field)->export();
+    }
+    return new self($resultArray);
   }
 }
