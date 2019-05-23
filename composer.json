@@ -1,5 +1,5 @@
 {
-    "name": "pinatra/GraphPinatra",
+    "name": "pinatra/graphpinatra",
     "description": "GrapgQL framework with Eloquent",
     "type": "poject",
     "require": {
