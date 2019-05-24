@@ -20,6 +20,8 @@ $dotenv->load();
 
 \GraphApp\Models\Model::$config = config('database');
 
+\GraphApp\Models\DB::enableQueryLog();
+
 $debug = false;
 if (!empty($_GET['debug'])) {
   set_error_handler(function($severity, $message, $file, $line) use (&$phpErrors) {
@@ -63,6 +65,10 @@ try {
   $output['errors'] = [
     FormattedError::createFromException($error, $debug)
   ];
+}
+
+if ($debug) {
+  $output['queries'] = \GraphApp\Models\DB::getQueryLog();
 }
 
 header('Content-Type: application/json', true, $httpStatus);
